@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>РуссКопилот — AI-помощник для Рунета</title>
+<meta name="description" content="Первый AI-ассистент, созданный специально для Рунета. Суммаризация страниц, помощь с текстом, поддержка ВКонтакте и Яндекса.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--p:#7C3AED;--p2:#9F67FF;--p3:#06B6D4;--bg:#0A0A0F;--surf:#111118;--card:#18181F;--text:#F1F0FF;--muted:#8080A0}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{text-decoration:none;color:inherit}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(124,58,237,.15);padding:0 5vw;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{font-weight:800;font-size:18px;display:flex;align-items:center;gap:10px;color:var(--text)}
+.logo-box{width:34px;height:34px;background:linear-gradient(135deg,var(--p),var(--p3));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.nav-links{display:flex;gap:32px;font-size:14px;font-weight:500;color:var(--muted)}
+.nav-links a:hover{color:var(--text);transition:.15s}
+.nav-cta{background:var(--p);color:#fff;padding:9px 22px;border-radius:10px;font-size:14px;font-weight:700;border:none;cursor:pointer;transition:.18s}
+.nav-cta:hover{background:var(--p2);transform:translateY(-1px)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;padding:80px 5vw 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:900px;background:radial-gradient(ellipse,rgba(124,58,237,.14) 0%,transparent 70%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:-100px;right:-100px;width:500px;height:500px;background:radial-gradient(ellipse,rgba(6,182,212,.08) 0%,transparent 70%);pointer-events:none}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);border-radius:99px;font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--p2);margin-bottom:24px}
+h1{font-size:clamp(36px,5vw,64px);font-weight:900;line-height:1.07;letter-spacing:-.02em;margin-bottom:20px}
+h1 em{font-style:normal;background:linear-gradient(135deg,var(--p2),var(--p3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-desc{font-size:18px;line-height:1.65;color:var(--muted);margin-bottom:36px}
+.cta-row{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.btn-primary{background:linear-gradient(135deg,var(--p),#5B21B6);color:#fff;padding:16px 32px;border-radius:12px;font-size:15px;font-weight:700;border:none;cursor:pointer;transition:.18s;box-shadow:0 8px 28px rgba(124,58,237,.35)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(124,58,237,.45)}
+.btn-ghost{background:rgba(255,255,255,.06);color:var(--text);border:1px solid rgba(255,255,255,.12);padding:14px 28px;border-radius:12px;font-size:14px;font-weight:600;cursor:pointer;transition:.18s}
+.btn-ghost:hover{background:rgba(255,255,255,.1)}
+.meta-row{display:flex;gap:20px;margin-top:20px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+.stars{color:#fbbf24}
+
+/* MOCKUP */
+.mockup{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,.5)}
+.mock-bar{background:rgba(255,255,255,.04);padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06)}
+.dots{display:flex;gap:6px}.dot{width:11px;height:11px;border-radius:50%}
+.url{flex:1;background:rgba(255,255,255,.06);border-radius:6px;padding:5px 12px;font-size:12px;color:var(--muted);font-family:monospace}
+.mock-body{padding:20px;display:grid;grid-template-columns:1fr 260px;gap:16px}
+.page-lines{display:flex;flex-direction:column;gap:8px;padding-top:4px}
+.line{height:11px;background:rgba(255,255,255,.07);border-radius:4px}
+.ai-panel{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;padding:14px}
+.ai-head{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:700;color:var(--p2);margin-bottom:12px}
+.ai-logo{width:20px;height:20px;background:linear-gradient(135deg,var(--p),var(--p3));border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.ai-bubble{background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.2);border-radius:8px;padding:10px;font-size:11px;color:rgba(241,240,255,.75);line-height:1.55;margin-bottom:10px}
+.ai-chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:5px;padding:3px 9px;font-size:10px;color:var(--muted)}
+
+/* TRUST */
+.trust{padding:40px 5vw;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);display:flex;justify-content:center;gap:60px;flex-wrap:wrap}
+.trust-item{text-align:center}
+.trust-n{font-size:36px;font-weight:900;background:linear-gradient(135deg,var(--p2),var(--p3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.trust-l{font-size:13px;color:var(--muted);margin-top:4px}
+
+/* FEATURES */
+.features{padding:100px 5vw}
+.features-inner{max-width:1100px;margin:0 auto}
+.section-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--p2);margin-bottom:14px}
+.section-title{font-size:clamp(28px,4vw,46px);font-weight:800;letter-spacing:-.02em;margin-bottom:16px}
+.section-sub{font-size:17px;color:var(--muted);line-height:1.65;max-width:520px;margin-bottom:56px}
+.feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.feat{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:26px;transition:.2s}
+.feat:hover{border-color:rgba(124,58,237,.3);transform:translateY(-3px)}
+.feat-icon{width:46px;height:46px;background:rgba(124,58,237,.1);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:18px;border:1px solid rgba(124,58,237,.15)}
+.feat-title{font-size:16px;font-weight:700;margin-bottom:8px}
+.feat-desc{font-size:13.5px;color:var(--muted);line-height:1.65}
+
+/* PRICING */
+.pricing{padding:100px 5vw;background:var(--surf)}
+.pricing-inner{max-width:1100px;margin:0 auto;text-align:center}
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:760px;margin:56px auto 0;text-align:left}
+.plan{background:var(--card);border:1px solid rgba(255,255,255,.08);border-radius:20px;padding:30px}
+.plan.hot{border-color:var(--p);background:linear-gradient(145deg,rgba(124,58,237,.1),var(--card));box-shadow:0 0 40px rgba(124,58,237,.12)}
+.plan-badge{display:inline-block;background:linear-gradient(135deg,var(--p),#9F67FF);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;margin-bottom:12px}
+.plan-name{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:14px}
+.plan-price{font-size:40px;font-weight:900;color:var(--text)}
+.plan-price span{font-size:17px;color:var(--muted);font-weight:400}
+.plan-period{font-size:13px;color:var(--muted);margin-bottom:22px}
+.plan-div{height:1px;background:rgba(255,255,255,.07);margin-bottom:20px}
+.plan-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-bottom:24px;font-size:13.5px;color:var(--muted)}
+.plan-list li{display:flex;gap:9px;align-items:flex-start}
+.plan-list li.on{color:var(--text)}
+.ok{color:#22c55e}.no{color:rgba(255,255,255,.2)}
+.plan-btn{width:100%;padding:14px;border-radius:10px;border:none;font-size:14px;font-weight:700;cursor:pointer;transition:.18s;font-family:'Outfit',sans-serif}
+.plan-btn.free{background:rgba(255,255,255,.07);color:var(--text);border:1px solid rgba(255,255,255,.1)}
+.plan-btn.free:hover{background:rgba(255,255,255,.12)}
+.plan-btn.paid{background:linear-gradient(135deg,var(--p),#5B21B6);color:#fff;box-shadow:0 6px 20px rgba(124,58,237,.35)}
+.plan-btn.paid:hover{transform:translateY(-1px);box-shadow:0 10px 28px rgba(124,58,237,.45)}
+.value-note{background:rgba(124,58,237,.06);border:1px solid rgba(124,58,237,.2);border-radius:14px;padding:20px 24px;max-width:760px;margin:24px auto 0;display:flex;gap:16px;align-items:flex-start;text-align:left}
+.value-note h4{font-size:14px;font-weight:700;color:var(--p2);margin-bottom:6px}
+.value-note p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* FAQ */
+.faq{padding:100px 5vw}
+.faq-inner{max-width:1100px;margin:0 auto}
+.faq-list{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:4px}
+.faq-item{background:var(--card);border:1px solid rgba(255,255,255,.07);border-radius:12px;overflow:hidden}
+.faq-q{padding:18px 22px;font-size:14.5px;font-weight:600;cursor:pointer;display:flex;justify-content:space-between;align-items:center;user-select:none;transition:.15s}
+.faq-q:hover{background:rgba(255,255,255,.03)}
+.faq-arrow{color:var(--p2);font-size:18px;transition:transform .25s;flex-shrink:0}
+.faq-item.open .faq-arrow{transform:rotate(180deg)}
+.faq-a{padding:0 22px;font-size:13.5px;line-height:1.75;color:var(--muted);max-height:0;overflow:hidden;transition:max-height .35s ease,padding .2s}
+.faq-item.open .faq-a{max-height:300px;padding:0 22px 18px}
+
+/* CTA FINAL */
+.cta-final{text-align:center;padding:120px 5vw;position:relative;overflow:hidden}
+.cta-final::before{content:'';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(124,58,237,.1) 0%,transparent 70%);pointer-events:none}
+.cta-final h2{font-size:clamp(30px,5vw,54px);font-weight:900;letter-spacing:-.02em;margin-bottom:16px;position:relative}
+.cta-final p{font-size:17px;color:var(--muted);margin-bottom:36px;position:relative}
+
+footer{padding:36px 5vw;border-top:1px solid rgba(255,255,255,.07);display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);flex-wrap:wrap;gap:12px}
+footer a:hover{color:var(--text);transition:.15s}
+
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .plans{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .trust{gap:32px}
+  .mock-body{grid-template-columns:1fr}
+  .ai-panel{display:none}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo"><div class="logo-box">🤖</div> РуссКопилот</div>
+  <div class="nav-links">
+    <a href="#features">Возможности</a>
+    <a href="#pricing">Тарифы</a>
+    <a href="support.html">Поддержка</a>
+  </div>
+  <button class="nav-cta" onclick="window.open('https://chrome.google.com/webstore','_blank')">Установить бесплатно</button>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <div class="badge">🤖 AI-помощник для Рунета</div>
+      <h1>Умный AI прямо в Chrome — <em>на русском</em></h1>
+      <p class="hero-desc">РуссКопилот суммаризирует страницы, помогает писать письма и объясняет сложные тексты. Нативно поддерживает ВКонтакте, Яндекс и Госуслуги.</p>
+      <div class="cta-row">
+        <button class="btn-primary" onclick="window.open('https://chrome.google.com/webstore','_blank')">🔥 Установить бесплатно</button>
+        <a href="#pricing" class="btn-ghost">Посмотреть тарифы →</a>
+      </div>
+      <div class="meta-row">
+        <span><span class="stars">★★★★★</span> 4.9 рейтинг</span>
+        <span>✅ Без регистрации</span>
+        <span>🔒 Данные не собираются</span>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mock-bar">
+        <div class="dots"><div class="dot" style="background:#ff5f57"></div><div class="dot" style="background:#ffbd2e"></div><div class="dot" style="background:#28ca41"></div></div>
+        <div class="url">🔒 rbc.ru/economics/article</div>
+      </div>
+      <div class="mock-body">
+        <div class="page-lines">
+          <div class="line" style="width:80%;height:18px"></div>
+          <div class="line" style="width:100%"></div><div class="line" style="width:90%"></div>
+          <div class="line" style="width:60%"></div><div class="line" style="width:95%"></div>
+          <div class="line" style="width:75%"></div><div class="line" style="width:85%"></div>
+        </div>
+        <div class="ai-panel">
+          <div class="ai-head"><div class="ai-logo">🤖</div>РуссКопилот</div>
+          <div class="ai-bubble">📋 <strong>Краткое резюме:</strong><br>Ставка ЦБ повышена до 16%. Причины — инфляционное давление и рост потребительского спроса...</div>
+          <div class="ai-chips">
+            <span class="chip">✏️ Переписать</span>
+            <span class="chip">📧 В письмо</span>
+            <span class="chip">📌 Пост ВК</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="trust">
+  <div class="trust-item"><div class="trust-n">50M+</div><div class="trust-l">Пользователей Рунета</div></div>
+  <div class="trust-item"><div class="trust-n">20</div><div class="trust-l">Запросов бесплатно</div></div>
+  <div class="trust-item"><div class="trust-n">4.9★</div><div class="trust-l">Рейтинг Chrome Store</div></div>
+  <div class="trust-item"><div class="trust-n">30 сек</div><div class="trust-l">Установка</div></div>
+</div>
+
+<section class="features" id="features">
+  <div class="features-inner">
+    <div class="section-tag">Возможности</div>
+    <div class="section-title">Всё для работы в Рунете</div>
+    <p class="section-sub">Единственный AI-ассистент, знающий особенности российского интернета.</p>
+    <div class="feats">
+      <div class="feat"><div class="feat-icon">⚡</div><div class="feat-title">Мгновенная суммаризация</div><div class="feat-desc">Одна кнопка — и любая страница в трёх абзацах. Экономит часы чтения каждую неделю.</div></div>
+      <div class="feat"><div class="feat-icon">✍️</div><div class="feat-title">Помощь с текстом</div><div class="feat-desc">Пишите письма, посты ВКонтакте, комментарии и деловую переписку с AI-поддержкой.</div></div>
+      <div class="feat"><div class="feat-icon">🇷🇺</div><div class="feat-title">Нативный Рунет</div><div class="feat-desc">Понимает ВКонтакте, Яндекс.Почту, Госуслуги, Авито и другие российские сервисы.</div></div>
+      <div class="feat"><div class="feat-icon">❓</div><div class="feat-title">Вопросы по тексту</div><div class="feat-desc">Выделите любой фрагмент и задайте вопрос. AI ответит в контексте страницы.</div></div>
+      <div class="feat"><div class="feat-icon">🔐</div><div class="feat-title">Конфиденциальность</div><div class="feat-desc">Ваши данные не сохраняются и не передаются третьим лицам. Только вы и AI.</div></div>
+      <div class="feat"><div class="feat-icon">🌐</div><div class="feat-title">Любой сайт</div><div class="feat-desc">Работает на 100% сайтов — от новостных порталов до интернет-магазинов.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="pricing">
+  <div class="pricing-inner">
+    <div class="section-tag">Тарифы</div>
+    <div class="section-title">Начните бесплатно</div>
+    <p class="section-sub" style="margin:0 auto 0">Бесплатная версия полностью рабочая. Pro — для тех, кто хочет максимум.</p>
+    <div class="plans">
+      <div class="plan">
+        <div class="plan-name">Бесплатно</div>
+        <div class="plan-price">0 ₽</div>
+        <div class="plan-period">навсегда бесплатно</div>
+        <div class="plan-div"></div>
+        <ul class="plan-list">
+          <li class="on"><span class="ok">✓</span> 20 AI-запросов в день</li>
+          <li class="on"><span class="ok">✓</span> Суммаризация страниц</li>
+          <li class="on"><span class="ok">✓</span> Вопросы по тексту</li>
+          <li class="on"><span class="ok">✓</span> Базовый GPT-3.5</li>
+          <li><span class="no">✗</span> Безлимитные запросы</li>
+          <li><span class="no">✗</span> GPT-4o</li>
+          <li><span class="no">✗</span> История запросов</li>
+        </ul>
+        <button class="plan-btn free" onclick="window.open('https://chrome.google.com/webstore','_blank')">Установить бесплатно</button>
+      </div>
+      <div class="plan hot">
+        <div class="plan-badge">🔥 ПОПУЛЯРНЫЙ</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">499 ₽<span>/мес</span></div>
+        <div class="plan-period">≈ чашка кофе в месяц</div>
+        <div class="plan-div"></div>
+        <ul class="plan-list">
+          <li class="on"><span class="ok">✓</span> <strong>Безлимитные AI-запросы</strong></li>
+          <li class="on"><span class="ok">✓</span> <strong>GPT-4o — умнее в 10×</strong></li>
+          <li class="on"><span class="ok">✓</span> <strong>История всех запросов</strong></li>
+          <li class="on"><span class="ok">✓</span> <strong>Генерация изображений</strong></li>
+          <li class="on"><span class="ok">✓</span> <strong>Приоритетная поддержка</strong></li>
+          <li class="on"><span class="ok">✓</span> Всё из бесплатной версии</li>
+        </ul>
+        <button class="plan-btn paid">Начать 7 дней бесплатно →</button>
+      </div>
+    </div>
+    <div class="value-note">
+      <div style="font-size:28px;flex-shrink:0">💡</div>
+      <div><h4>Почему Pro стоит своих денег?</h4><p>Пользователь экономит 3–5 часов в неделю на чтении и написании текстов. Это 12–20 часов в месяц. Стоимость одного часа вашего времени уже окупает подписку. GPT-4o даёт ответы, которым можно доверять.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="faq-inner">
+    <div style="text-align:center;margin-bottom:56px">
+      <div class="section-tag" style="margin-bottom:14px">FAQ</div>
+      <div class="section-title">Часто задаваемые вопросы</div>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Чем отличается от Monica AI и Sider?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Западные аналоги не поддерживают ВКонтакте, Яндекс.Почту и Госуслуги. РуссКопилот создан специально для Рунета — понимает структуру российских сайтов и особенности русского языка на принципиально другом уровне.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Безопасно ли расширение?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Да. Расширение не сохраняет ваши данные и не передаёт их третьим лицам. Все запросы обрабатываются напрямую через API без промежуточного хранения.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Как работает 7-дневный пробный период?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">После установки вы получаете полный доступ к Pro-функциям на 7 дней. Карта не требуется. По истечении периода можно продолжить с бесплатной версией или оформить подписку.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Нужен ли API-ключ?<span class="faq-arrow">▼</span></div>
+        <div class="faq-a">Для бесплатной версии — нет, достаточно просто установить расширение. Для Pro можно использовать собственный ключ OpenAI или оформить подписку через нас.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta-final">
+  <h2>Попробуйте прямо сейчас — <em style="background:linear-gradient(135deg,var(--p2),var(--p3));-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:normal">бесплатно</em></h2>
+  <p>Установка занимает 30 секунд. Кредитная карта не нужна.</p>
+  <button class="btn-primary" style="font-size:17px;padding:18px 40px" onclick="window.open('https://chrome.google.com/webstore','_blank')">🚀 Добавить в Chrome</button>
+</section>
+
+<footer>
+  <strong style="color:var(--text)">РуссКопилот</strong>
+  <div style="display:flex;gap:24px">
+    <a href="privacy.html">Политика конфиденциальности</a>
+    <a href="support.html">Поддержка</a>
+  </div>
+  <span>© 2025 РуссКопилот</span>
+</footer>
+
+<script>
+document.querySelectorAll('.faq-item').forEach(item=>{
+  item.querySelector('.faq-q').addEventListener('click',()=>{
+    const open=item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+    if(!open)item.classList.add('open');
+  });
+});
+</script>
+</body>
+</html>

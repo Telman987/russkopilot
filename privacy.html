@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Политика конфиденциальности — РуссКопилот</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#7C3AED;--p2:#9F67FF;--bg:#0A0A0F;--surf:#111118;--card:#18181F;--text:#F1F0FF;--muted:#8080A0;--bdr:rgba(255,255,255,.08)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Outfit',sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased}
+a{color:var(--p2);text-decoration:underline;text-underline-offset:3px}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(10,10,15,.9);backdrop-filter:blur(16px);border-bottom:1px solid var(--bdr);padding:0 5vw;display:flex;align-items:center;gap:16px;height:64px}
+.nav-logo{font-weight:800;font-size:17px;display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--text)}
+.logo-box{width:30px;height:30px;background:linear-gradient(135deg,var(--p),#06B6D4);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.back{font-size:13px;color:var(--muted);text-decoration:none;margin-left:auto}
+.back:hover{color:var(--text)}
+.page{max-width:720px;margin:0 auto;padding:100px 24px 80px}
+.page-title{font-size:clamp(28px,4vw,40px);font-weight:900;letter-spacing:-.02em;margin-bottom:6px}
+.page-meta{font-size:13px;color:var(--muted);margin-bottom:48px}
+h2{font-size:19px;font-weight:700;margin:36px 0 12px;color:var(--text)}
+p{font-size:15px;line-height:1.75;color:var(--muted);margin-bottom:14px}
+ul{padding-left:20px;display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+li{font-size:15px;line-height:1.65;color:var(--muted)}
+.highlight{background:rgba(124,58,237,.08);border:1px solid rgba(124,58,237,.2);border-radius:12px;padding:20px 24px;margin:24px 0}
+.highlight p{margin:0;color:var(--text)}
+.contact{background:var(--card);border:1px solid var(--bdr);border-radius:14px;padding:24px;margin-top:40px}
+.contact h3{font-size:16px;font-weight:700;margin-bottom:8px}
+.contact p{font-size:14px;color:var(--muted);margin:0}
+footer{border-top:1px solid var(--bdr);padding:28px 24px;text-align:center;font-size:13px;color:var(--muted);max-width:720px;margin:0 auto}
+</style>
+</head>
+<body>
+<nav>
+  <a class="nav-logo" href="index.html"><div class="logo-box">🤖</div>РуссКопилот</a>
+  <a class="back" href="index.html">← На главную</a>
+</nav>
+
+<div class="page">
+  <div class="page-title">Политика конфиденциальности</div>
+  <div class="page-meta">Последнее обновление: 1 января 2025 г.</div>
+
+  <div class="highlight">
+    <p>🔒 <strong>Коротко:</strong> РуссКопилот не собирает, не хранит и не передаёт ваши личные данные. Всё остаётся в вашем браузере.</p>
+  </div>
+
+  <h2>1. Общие положения</h2>
+  <p>Настоящая политика конфиденциальности описывает, как расширение РуссКопилот («Расширение», «мы») обрабатывает информацию при использовании Chrome-расширения.</p>
+
+  <h2>2. Какие данные мы НЕ собираем</h2>
+  <p>Расширение РуссКопилот не собирает:</p>
+  <ul>
+    <li>Личную информацию (имя, email, телефон, адрес)</li>
+    <li>Историю браузера или посещённые страницы</li>
+    <li>Тексты страниц, которые вы анализируете</li>
+    <li>Ваши вопросы и ответы AI</li>
+    <li>API-ключи (хранятся только локально)</li>
+    <li>Данные банковских карт или платёжную информацию</li>
+  </ul>
+
+  <h2>3. Что хранится локально</h2>
+  <p>В хранилище вашего браузера (chrome.storage.local) сохраняются только:</p>
+  <ul>
+    <li>Настройки расширения (включение/выключение функций)</li>
+    <li>Счётчик дневных запросов (сбрасывается каждые 24 часа)</li>
+    <li>API-ключ OpenAI (если вы его указали) — только локально</li>
+    <li>Статус подписки</li>
+  </ul>
+  <p>Эти данные <strong>не передаются</strong> на наши серверы и доступны только вам.</p>
+
+  <h2>4. Передача данных третьим лицам</h2>
+  <p>Когда вы используете AI-функции расширения, текст страницы передаётся напрямую в API OpenAI (api.openai.com) по вашему собственному ключу. РуссКопилот не является посредником — данные идут напрямую от вашего браузера к OpenAI согласно их <a href="https://openai.com/ru/policies/privacy-policy" target="_blank">политике конфиденциальности</a>.</p>
+
+  <h2>5. Разрешения расширения</h2>
+  <p>Расширение запрашивает следующие разрешения Chrome:</p>
+  <ul>
+    <li><strong>activeTab</strong> — для чтения текста текущей вкладки только по вашему запросу</li>
+    <li><strong>storage</strong> — для хранения настроек локально в браузере</li>
+    <li><strong>scripting</strong> — для отображения кнопки на страницах</li>
+  </ul>
+
+  <h2>6. Дети</h2>
+  <p>Расширение не предназначено для лиц младше 13 лет. Мы сознательно не собираем данные детей.</p>
+
+  <h2>7. Изменения политики</h2>
+  <p>Мы можем обновлять эту политику. Актуальная версия всегда доступна на этой странице. При существенных изменениях мы уведомим пользователей через расширение.</p>
+
+  <h2>8. Контакты</h2>
+  <div class="contact">
+    <h3>Есть вопросы по конфиденциальности?</h3>
+    <p>Напишите нам: <a href="mailto:osumidohiz335@gmail.com">osumidohiz335@gmail.com</a><br>Или воспользуйтесь <a href="support.html">страницей поддержки</a>.</p>
+  </div>
+</div>
+
+<footer>© 2025 РуссКопилот &nbsp;·&nbsp; <a href="index.html" style="color:inherit">Главная</a> &nbsp;·&nbsp; <a href="support.html" style="color:inherit">Поддержка</a></footer>
+</body>
+</html>
